@@ -22,7 +22,7 @@ Valeria Vera 16-11233
 
 1. Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una como "visitantes" y la otra como "locales". Esto significa que, si hay 10 equipos, cada equipo jugará 18 veces.
 
-_(¬Participante(x) ∨ ¬Participante(y) v (x == y) ∨ Juego(x, y, d, h)) ∧ (¬Participante(x) ∨ ¬Participante(y) ∨ (x == y) ∨ Juego(y, x, d, h))_
+_(¬Participante(x) ∨ ¬Participante(y) v (x = y) ∨ Juego(x, y, d, h)) ∧ (¬Participante(x) ∨ ¬Participante(y) ∨ (x = y) ∨ Juego(y, x, d, h))_
 
 
 2. Dos juegos no pueden ocurrir al mismo tiempo.
@@ -31,7 +31,7 @@ _¬Juego(x, y, d1, h1) ∨ ¬Juego(x, y, d2, h2) ∨ ¬MismoDia(d1, d2) ∨  ¬M
 
 3. Un participante puede jugar a lo sumo una vez por día.
 
-_Dia(x, d1) ∨ ¬Dia(x, d2) v (d1 == d2) ∨ ¬MismoDia(d1, d2)_
+_Dia(x, d1) ∨ ¬Dia(x, d2) v (d1 = d2) ∨ ¬MismoDia(d1, d2)_
 
 4. Un participante no puede jugar de "visitante" en dos días consecutivos, ni de "local" dos días seguidos.
 
