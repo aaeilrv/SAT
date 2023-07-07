@@ -1,4 +1,5 @@
 from datetime import datetime
+from utils import o_clock
 import json
 import sys
 
@@ -16,6 +17,9 @@ if __name__ == '__main__':
     start_time = datetime.strptime(data['start_time'], '%H:%M:%S')
     end_time = datetime.strptime(data['end_time'], '%H:%M:%S')
     num_players = len(data['participants'])
+
+    start_time = o_clock(start_time)
+    end_time = o_clock(end_time)
 
     # calculate the total time of the game
     days = end_date - start_date
