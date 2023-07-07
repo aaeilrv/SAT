@@ -23,10 +23,65 @@ if __name__ == '__main__':
 
     # calculate the total time of the game
     days = end_date - start_date
+    n_days = days.days
+    
     hours = end_time - start_time
+    n_hours = hours.seconds//3600
 
     total_days = days.days + 1 # add 1 because the last day is included
     total_slots_per_day = hours / game_length
     total_slots = total_days * total_slots_per_day
 
     # pasar info pa que se resuelva la cosa
+
+    # pasar info pa que se resuelva la cosa
+    # x(j1, j2, d, h) = el jugados j1 (local) juega contra j2 (visitante) el dia d a la hora h
+    # buscamos todos los posbiles juegos (asi se vayan a jugar o no)
+    x = []
+    for j1 in range(num_players):
+        for j2 in range(num_players):
+            for d in range(n_days):
+                for h in range(n_hours):
+                    x.append((j1, j2, d, h))
+
+    # primera reestricciones
+    # dos juegos no pueden ocurrir al miemos tiempo
+    # (all j1, j2, j3, j4, d, h|j1 != j2 and j3 != j4 and X(j1,j2,d,h): not X(j3, j4, d, h))
+    
+    # transformado queda
+    # (all j1, j2, j3, j4, d, h|: not X(j1, j2, d, h) or not(j3, j4, d, h))
+    rest_1 = [] # (not x_i, not x_j)
+    for j1 in range(num_players):
+        for j2 in range(num_players):
+            for j3 in range(num_players):
+                for j4 in range(num_players):
+                    for d in range(n_days):
+                        for h in range(n_hours):
+                            if (j1 != j2 and j3 != j4):
+                                rest_1.append([(j1, j2, d, h), (j3, j4, d, h)])
+
+
+    # tercera reestriccion
+    # un jugador solo puede jugar maximo una vez por dia
+    # (all j1, j2, j3, d, h1, h2| j1 != j2 and j1 != j3 and j2 != j3 and X(j1, j2, d, h1): 
+    #                               not X(j1, j3, d, h2) or not X(j3, j1, d, h2) or not X(j2, j3, d, h2) or 
+    #                               not X(j3, j2, d, h2) or not X(j1, j2, d, h2) or not X(j2, j1, d, h2))
+
+    # transformando queda
+    #(all j1, j2, j3, d, h1, h2|:not X(j1, j2, d, h1) or 
+    #                               not X(j1, j3, d, h2) or not X(j3, j1, d, h2) or not X(j2, j3, d, h2) or 
+    #                               not X(j3, j2, d, h2) or not X(j1, j2, d, h2) or not X(j2, j1, d, h2))
+    rest_3 = []
+    for j1 in range(num_players):
+        for j2 in range(num_players):
+            for j3 in range(num_players):
+                for d in range(n_days):
+                    for h1 in range(n_hours):
+                        for h2 in range(n_hours):
+                            if j1 != j2 and not j3 in [j1, j2] and h1 != h2:
+                                rest_3.append([(j1, j2, d, h1), 
+                                               (j1, j3, d, h2), (j3, j1, d, h2), 
+                                               (j2, j3, d, h2), (j3, j2, d, h2), 
+                                               (j1, j2, d, h2), (j2, j1, d, h2)])
+
+    print(len(rest_3))
