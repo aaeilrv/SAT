@@ -1,5 +1,5 @@
 from datetime import datetime
-from utils import o_clock
+from utils import o_clock, get_posible_games, get_rest_1
 import json
 import sys
 
@@ -27,38 +27,17 @@ if __name__ == '__main__':
     hours = end_time - start_time
     n_hours = hours.seconds//3600
 
-    n_days = days.days
+    n_days = days.days + 1
     total_slots_per_day = hours / game_length
     total_slots = n_days * total_slots_per_day
 
     # pasar info pa que se resuelva la cosa
 
-    # x(j1, j2, d, h) = el jugados j1 (local) juega contra j2 (visitante) el dia d a la hora h
-    # buscamos todos los posibles juegos (asi se vayan a jugar o no)
-    x = []
-    for j1 in range(num_players):
-        for j2 in range(num_players):
-            for d in range(n_days+1):
-                for h in range(n_hours):
-                    if j1 != j2:
-                        x.append((j1, j2, d, h))
+    x = get_posible_games(num_players, n_days, n_hours)
 
-    # primera restriccion
-    # dos juegos no pueden ocurrir al mismo tiempo
-    # (all j1, j2, j3, j4, d, h | j1 != j2 and j3 != j4 and X(j1,j2,d,h): not X(j3, j4, d, h))
+    rest_1 = get_rest_1(num_players, n_days, n_hours)
+
     
-    # transformado queda
-    # (all j1, j2, j3, j4, d, h|: not X(j1, j2, d, h) or not(j3, j4, d, h))
-    rest_1 = [] # (not x_i, not x_j)
-    for j1 in range(num_players):
-        for j2 in range(num_players):
-            for j3 in range(num_players):
-                for j4 in range(num_players):
-                    for d in range(n_days):
-                        for h in range(n_hours):
-                            if (j1 != j2 and j3 != j4):
-                                rest_1.append([(j1, j2, d, h), (j3, j4, d, h)])
-
     # segunda restriccion
     # Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
     # como "visitante" y la otra como "local".
