@@ -116,4 +116,12 @@ if __name__ == '__main__':
                         rest_4.append([(j1, j2, d, h), (j1, j2, d+1, h)])
                         rest_4.append([(j2, j1, d, h), (j2, j1, d+1, h)])
 
-    print((rest_4))
+    rest = rest_1 + rest_2 + rest_3 + rest_4
+    values_mapping = {}
+
+    for i in rest:
+        index = x.index(i[0])
+        values_mapping[i[0]] = index
+
+        index = x.index(i[1])
+        values_mapping[i[1]] = index
