@@ -43,7 +43,7 @@ if __name__ == '__main__':
                 for h in range(n_hours):
                     x.append((j1, j2, d, h))
 
-    # primera restricciones
+    # primera restriccion
     # dos juegos no pueden ocurrir al mismo tiempo
     # (all j1, j2, j3, j4, d, h | j1 != j2 and j3 != j4 and X(j1,j2,d,h): not X(j3, j4, d, h))
     
@@ -61,11 +61,16 @@ if __name__ == '__main__':
 
     # segunda restriccion
     # Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
-    # como "visitantes" y la otra como "locales".
-    # (all j1, j2, d h | j1 != j2 and X(j1, j2, d, h): X(j2, j1, d, h))
+    # como "visitante" y la otra como "local".
+    # (all j1, j2, d, h |: not X(j1, j2, d, h) or X(j2, j1, d, h))
 
-    # transformando queda
-    # (all j1, j2, d, h |: X(j1, j2, d, h) or X(j2, j1, d, h)) NO ES CNF AAA
+    rest_2 = []
+    for j1 in range(num_players):
+        for j2 in range(num_players):
+            for d in range(n_days):
+                for h in range(n_hours):
+                    if (j1 != j2):
+                        rest_2.append([(j1, j2, d, h), (j2, j1, d, h)])
 
     # tercera reestriccion
     # un jugador solo puede jugar maximo una vez por dia
