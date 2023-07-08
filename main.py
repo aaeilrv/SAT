@@ -40,7 +40,8 @@ if __name__ == '__main__':
         for j2 in range(num_players):
             for d in range(n_days+1):
                 for h in range(n_hours):
-                    x.append((j1, j2, d, h))
+                    if j1 != j2:
+                        x.append((j1, j2, d, h))
 
     # primera restriccion
     # dos juegos no pueden ocurrir al mismo tiempo
@@ -71,7 +72,7 @@ if __name__ == '__main__':
                     if (j1 != j2):
                         rest_2.append([(j1, j2, d, h), (j2, j1, d, h)])
 
-    # tercera reestriccion
+    # tercera restriccion
     # un jugador solo puede jugar maximo una vez por dia
     # (all j1, j2, j3, d, h1, h2| j1 != j2 and j1 != j3 and j2 != j3 and X(j1, j2, d, h1): 
     #                               not X(j1, j3, d, h2) or not X(j3, j1, d, h2) or not X(j2, j3, d, h2) or 
