@@ -121,7 +121,9 @@ if __name__ == '__main__':
 
     for i in rest:
         index = x.index(i[0])
-        values_mapping[i[0]] = index
+        values_mapping[index] = i[0]
 
-        index = x.index(i[1])
-        values_mapping[i[1]] = index
+        #index = x.index(i[1])
+        #values_mapping[index] = i[1]
+    
+    print(values_mapping)
