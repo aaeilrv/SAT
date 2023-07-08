@@ -23,14 +23,13 @@ if __name__ == '__main__':
 
     # calculate the total time of the game
     days = end_date - start_date
-    n_days = days.days
     
     hours = end_time - start_time
     n_hours = hours.seconds//3600
 
-    total_days = days.days + 1 # add 1 because the last day is included
+    n_days = days.days
     total_slots_per_day = hours / game_length
-    total_slots = total_days * total_slots_per_day
+    total_slots = n_days * total_slots_per_day
 
     # pasar info pa que se resuelva la cosa
 
@@ -39,7 +38,7 @@ if __name__ == '__main__':
     x = []
     for j1 in range(num_players):
         for j2 in range(num_players):
-            for d in range(n_days):
+            for d in range(n_days+1):
                 for h in range(n_hours):
                     x.append((j1, j2, d, h))
 
@@ -123,7 +122,5 @@ if __name__ == '__main__':
         index = x.index(i[0])
         values_mapping[index] = i[0]
 
-        #index = x.index(i[1])
-        #values_mapping[index] = i[1]
-    
-    print(values_mapping)
+        index = x.index(i[1])
+        values_mapping[index] = i[1]
