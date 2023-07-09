@@ -31,7 +31,6 @@ if __name__ == '__main__':
     total_slots_per_day = hours / game_length
     total_slots = n_days * total_slots_per_day
 
-
     x = get_posible_games(num_players, n_days, n_hours)
 
     rest_1 = get_rest_1(num_players, n_days, n_hours)
