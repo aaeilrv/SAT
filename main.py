@@ -1,5 +1,5 @@
 from datetime import datetime
-from utils import o_clock, get_posible_games, get_rest_1
+from utils import o_clock, get_posible_games, get_rest_1, get_rest_2, get_rest_3, get_rest_4, create_dimacs_file
 import json
 import sys
 
@@ -31,76 +31,13 @@ if __name__ == '__main__':
     total_slots_per_day = hours / game_length
     total_slots = n_days * total_slots_per_day
 
-    # pasar info pa que se resuelva la cosa
 
     x = get_posible_games(num_players, n_days, n_hours)
 
     rest_1 = get_rest_1(num_players, n_days, n_hours)
+    rest_2 = get_rest_2(num_players, n_days, n_hours)
+    rest_3 = get_rest_3(num_players, n_days, n_hours)
+    rest_4 = get_rest_4(num_players, n_days, n_hours)
 
+    create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
     
-    # segunda restriccion
-    # Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
-    # como "visitante" y la otra como "local".
-    # (all j1, j2, d, h |: not X(j1, j2, d, h) or X(j2, j1, d, h))
-
-    rest_2 = []
-    for j1 in range(num_players):
-        for j2 in range(num_players):
-            for d in range(n_days):
-                for h in range(n_hours):
-                    if (j1 != j2):
-                        rest_2.append([(j1, j2, d, h), (j2, j1, d, h)])
-
-    # tercera restriccion
-    # un jugador solo puede jugar maximo una vez por dia
-    # (all j1, j2, j3, d, h1, h2| j1 != j2 and j1 != j3 and j2 != j3 and X(j1, j2, d, h1): 
-    #                               not X(j1, j3, d, h2) or not X(j3, j1, d, h2) or not X(j2, j3, d, h2) or 
-    #                               not X(j3, j2, d, h2) or not X(j1, j2, d, h2) or not X(j2, j1, d, h2))
-
-    # transformando queda
-    #(all j1, j2, j3, d, h1, h2|:not X(j1, j2, d, h1) or 
-    #                               not X(j1, j3, d, h2) or not X(j3, j1, d, h2) or not X(j2, j3, d, h2) or 
-    #                               not X(j3, j2, d, h2) or not X(j1, j2, d, h2) or not X(j2, j1, d, h2))
-    rest_3 = []
-    for j1 in range(num_players):
-        for j2 in range(num_players):
-            for j3 in range(num_players):
-                for d in range(n_days):
-                    for h1 in range(n_hours):
-                        for h2 in range(n_hours):
-                            if j1 != j2 and not j3 in [j1, j2] and h1 != h2:
-                                rest_3.append([(j1, j2, d, h1), 
-                                               (j1, j3, d, h2), (j3, j1, d, h2), 
-                                               (j2, j3, d, h2), (j3, j2, d, h2), 
-                                               (j1, j2, d, h2), (j2, j1, d, h2)])
-
-    #print(len(rest_3))
-
-    # cuarta restriccion
-    # Un participante no puede jugar de "visitante" en dos días consecutivos,
-    # ni de "local" dos días seguidos.
-    # (all j1, j2, d, h | j1 != j2 and X(j1, j2, d, h) : not X(j1, j2, d+1, h))
-    # (all j1, j2, d, h | j1 != j2 and X(j2, j1, d, h) : not X(j2, j1, d+1, h))
-
-    # transformando queda
-    # (all j1, j2, d, h |: not X(j1, j2, d, h) or not X(j1, j2, d+1, h))
-    # (all j1, j2, d, h |: not X(j2, j1, d, h) or not X(j2, j1, d+1, h))
-
-    rest_4 = []
-    for j1 in range(num_players):
-        for j2 in range(num_players):
-            for d in range(n_days):
-                for h in range(n_hours):
-                    if j1 != j2:
-                        rest_4.append([(j1, j2, d, h), (j1, j2, d+1, h)])
-                        rest_4.append([(j2, j1, d, h), (j2, j1, d+1, h)])
-
-    rest = rest_1 + rest_2 + rest_3 + rest_4
-    values_mapping = {}
-
-    for i in rest:
-        index = x.index(i[0])
-        values_mapping[index] = i[0]
-
-        index = x.index(i[1])
-        values_mapping[index] = i[1]
