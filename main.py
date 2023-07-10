@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils import o_clock, get_posible_games, get_rest_1, get_rest_2, get_rest_3, get_rest_4, create_dimacs_file
 import json
 import sys
@@ -14,12 +14,15 @@ if __name__ == '__main__':
     game_length = 2 # each game lasts 2 hours
     start_date = datetime.strptime(data['start_date'], '%Y-%m-%d')
     end_date = datetime.strptime(data['end_date'], '%Y-%m-%d')
-    start_time = datetime.strptime(data['start_time'], '%H:%M:%S')
-    end_time = datetime.strptime(data['end_time'], '%H:%M:%S')
+    start_time = datetime.strptime(data['start_time'], '%H:%M:%S.%f')
+    end_time = datetime.strptime(data['end_time'], '%H:%M:%S.%f')
     num_players = len(data['participants'])
 
-    start_time = o_clock(start_time)
-    end_time = o_clock(end_time)
+    start_time = o_clock(start_time, "start")
+    end_time = o_clock(end_time, "end")
+
+    print(f"start time: {start_time}")
+    print(f"end time: {end_time}")
 
     # calculate the total time of the game
     days = end_date - start_date
