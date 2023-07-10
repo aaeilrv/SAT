@@ -22,20 +22,23 @@ def get_posible_games(n_players, n_days, n_hours):
 # CNF:(not a or not b)
 # (X(j1, j2, d, h) or X(j3, j4, d, h)) and (not X(j1, j2, d, h) or not X(j3, j4, d, h))
 def get_rest_1(n_players, n_days, n_hours, possible_games):
-    rest_1 = []
+    rest = []
 
     for d in range(n_days):
         for h in range(n_hours):
+            curr_possible_games = []
             for j1 in range(n_players):
                 for j2 in range(n_players):
-                    for j3 in range(n_players):
-                        for j4 in range(n_players):
-                            if j1 != j2 and j3 != j4:
-                                x = possible_games.index((j1, j2, d, h)) + 1 
-                                y = possible_games.index((j3, j4, d, h)) + 1
+                    if j1 != j2:
+                        curr_possible_games.append((j1, j2, d, h))
 
-                                rest_1.append(f"-{x} -{y} 0\n")
-    return rest_1
+            subsets = combinations(curr_possible_games, 2)
+            for set in subsets:
+                x = possible_games.index(set[0])+1
+                y = possible_games.index(set[1])+1
+
+                rest.append(f"-{x} -{y} 0")
+    return rest
 
 # 2. Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
 # como "visitante" y la otra como "local".
