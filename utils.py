@@ -32,21 +32,25 @@ def no_x_or_no_y(curr_possible_games, possible_games, rest):
 
 # fix
 def x_or_y(curr_possible_games, possible_games, rest):
-    subsets = combinations(curr_possible_games, 2)
+    subsets = combinations(curr_possible_games, len(curr_possible_games))
     for set in subsets:
-        x = possible_games.index(set[0])+1
-        y = possible_games.index(set[1])+1
+        clausule = ""
+        for var in set:
+            x = possible_games.index(var)+1
+            clausule += f"{x} "
 
-        rest.append(f"{x} {y} 0\n")
+        if clausule != "":
+            rest.append(f"{clausule}0\n")
 
 def create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4):
     # create the dimacs file
     f = open("tournament.dimacs", "w")
-    f.write(f"p cnf {len(x)} {len(rest_1)+len(rest_3)+len(rest_4)}\n")
+    f.write(f"p cnf {len(x)} {len(rest_1+rest_2+rest_3+rest_4)}\n")
+
     for rest in rest_1:
         f.write(f"{rest}")
-    #for rest in rest_2:
-    #    f.write(f"{rest}")
+    for rest in rest_2:
+        f.write(f"{rest}")
     for rest in rest_3:
         f.write(f"{rest}")
     for rest in rest_4:
@@ -58,13 +62,6 @@ def write_ical_file(all_games, solution, tournament_name, players_names, day, ho
     cal.add('prodid', '-//My calendar product//example.com//')
     cal.add('version', '2.0')
     cal.add('name', tournament_name)
-
-    #event = Event()
-    #event.add('tournament_name', tournament_name)
-
-    print(solution)
-
-    solution = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 0"
 
     for sol in solution.split():
         if int(sol) > 0:
@@ -107,6 +104,7 @@ def create_ical(games, tournament_name, players_names, days, hours):
         solution = file.readline().strip()
         file.close()
     if solution == "UNSAT":
+        print("UNSATISFIABLE")
         print("Solution not found")
     else:
         write_ical_file(games, solution, tournament_name, players_names, days, hours)
