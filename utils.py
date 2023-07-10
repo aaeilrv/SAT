@@ -28,11 +28,13 @@ def get_rest_1(n_players, n_days, n_hours, possible_games):
         for h in range(n_hours):
             for j1 in range(n_players):
                 for j2 in range(n_players):
-                    if (j1 != j2):
-                        x = possible_games.index((j1, j2, d, h)) + 1 
-                        y = possible_games.index((j2, j1, d, h)) + 1
+                    for j3 in range(n_players):
+                        for j4 in range(n_players):
+                            if j1 != j2 and j3 != j4:
+                                x = possible_games.index((j1, j2, d, h)) + 1 
+                                y = possible_games.index((j3, j4, d, h)) + 1
 
-                        rest_1.append(f"-{x} -{y} 0 \n")
+                                rest_1.append(f"-{x} -{y} 0\n")
     return rest_1
 
 # 2. Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
@@ -88,36 +90,8 @@ def get_rest_4(n_players, n_days, n_hours):
 
 def create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4):
     # create the dimacs file
-    clausules = []
-
-    for clausule in rest_1:
-        i = x.index(clausule[0])
-        j = x.index(clausule[1])
-
-        clausules.append(f"{i+1} {j+1} 0")
-        clausules.append(f"-{i+1} -{j+1} 0")
-
-    for clausule in rest_2:
-        i = x.index(clausule[0])
-        j = x.index(clausule[1])
-
-        clausules.append(f"-{i+1} {j+1} 0")
-
-    for clausule in rest_3:
-        i = x.index(clausule[0])
-        j = x.index(clausule[1])
-        z = x.index(clausule[2])
-
-        clausules.append(f"-{i+1} -{j+1} -{z+1} 0")
-      
-    for clausule in rest_4:
-        i = x.index(clausule[0])
-        j = x.index(clausule[1])
-
-        clausules.append(f"-{i+1} -{j+1} 0")
-
     f = open("tournament.dimacs", "w")
-    f.write(f"p cnf {len(x)} {len(clausules)} \n")
-    for clausule in clausules:
-        f.write(f"{clausule} \n")
+    f.write(f"p cnf {len(x)} {len(rest_1)} \n")
+    for rest in rest_1:
+        f.write(f"{rest} \n")
     f.close()
