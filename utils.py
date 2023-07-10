@@ -133,8 +133,8 @@ def create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4):
     f.write(f"p cnf {len(x)} {len(rest_1)+len(rest_3)+len(rest_4)}\n")
     for rest in rest_1:
         f.write(f"{rest}")
-    #for rest in rest_2:
-    #    f.write(f"{rest} \n")
+    for rest in rest_2:
+        f.write(f"{rest} \n")
     for rest in rest_3:
         f.write(f"{rest}")
     for rest in rest_4:
