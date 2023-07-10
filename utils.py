@@ -40,27 +40,24 @@ def get_rest_1(n_players, n_days, n_hours, possible_games):
 
 # 2. Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
 # como "visitante" y la otra como "local".
-# CNF: (not a or b) and (b or not a)
-# not X(j1, j2, d1, h1) or X(j2, j1, d2, h2)
 def get_rest_2(n_players, n_days, n_hours, possible_games):
-    rest_2 = []
+    rest = []
     for j1 in range(n_players):
-        for j2 in range(n_players):
-            for d1 in range(n_days):
-                for d2 in range(n_days):
-                    for h1 in range(n_hours):
-                        for h2 in range(n_hours):
-                            if j1 != j2 and d1 != d2:
-                                x = possible_games.index((j1, j2, d1, h1)) + 1
-                                y = possible_games.index((j2, j1, d2, h2)) + 1
+            for j2 in range(n_players):
+                curr_possible_games = []
+                for d in range(n_days):
+                    for h in range(n_hours):
+                        if j1 != j2:
+                            curr_possible_games.append((j1, j2, d, h))
+                            #curr_possible_games.append((j2, j1, d, h))
+                subsets = combinations(curr_possible_games, 2)
+                for set in subsets:
+                    x = possible_games.index(set[0])+1
+                    y = possible_games.index(set[1])+1
 
-                                rest_2.append(f"-{x} {y} 0")
-
-                                x = possible_games.index((j2, j1, d1, h1)) + 1
-                                y = possible_games.index((j1, j2, d2, h2)) + 1
-
-                                rest_2.append(f"-{x} {y} 0")
-    return rest_2
+                    rest.append(f"-{x} -{y} 0")    
+                    rest.append(f"{x} {y} 0")   
+    return rest
 
 # 3. Un jugador solo puede jugar maximo una vez por dia
 # CNF: not a or not b or not c
