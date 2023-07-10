@@ -1,4 +1,5 @@
 from datetime import timedelta
+from itertools import combinations
 
 def o_clock(date_time):
     if date_time.minute != 0 or date_time.second != 0:
@@ -18,25 +19,25 @@ def get_posible_games(n_players, n_days, n_hours):
     return x
 
 # 1. Dos juegos no pueden ocurrir al mismo tiempo.
-#CNF: (a or b) and (not a or not b)
+# CNF:(not a or not b)
 # (X(j1, j2, d, h) or X(j3, j4, d, h)) and (not X(j1, j2, d, h) or not X(j3, j4, d, h))
-def get_rest_1(n_players, n_days, n_hours):
+def get_rest_1(n_players, n_days, n_hours, possible_games):
     rest_1 = []
 
-    for j1 in range(n_players):
-        for j2 in range(n_players):
-            for j3 in range(n_players):
-                for j4 in range(n_players):
-                    for d in range(n_days):
-                        for h in range(n_hours):
-                            if (j1 != j2 and j3 != j4):
-                                rest_1.append([(j1, j2, d, h), (j3, j4, d, h)])
+    for d in range(n_days):
+        for h in range(n_hours):
+            for j1 in range(n_players):
+                for j2 in range(n_players):
+                    if (j1 != j2):
+                        x = possible_games.index((j1, j2, d, h)) + 1 
+                        y = possible_games.index((j2, j1, d, h)) + 1
 
+                        rest_1.append(f"-{x} -{y} 0 \n")
     return rest_1
 
 # 2. Todos los participantes deben jugar dos veces con cada uno de los otros participantes, una
 # como "visitante" y la otra como "local".
-# CNF: (not a or b)
+# CNF: (not a or b) and (b or not a)
 # not X(j1, j2, d1, h1) or X(j2, j1, d2, h2)
 def get_rest_2(n_players, n_days, n_hours):
     rest_2 = []

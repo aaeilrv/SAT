@@ -25,18 +25,18 @@ if __name__ == '__main__':
     days = end_date - start_date
     
     hours = end_time - start_time
-    n_hours = hours.seconds//3600
+    n_hours = hours.seconds//3600 + 1
 
     n_days = days.days + 1
-    total_slots_per_day = hours / game_length
-    total_slots = n_days * total_slots_per_day
-
+    total_slots_per_day = n_hours // game_length
+    
     x = get_posible_games(num_players, n_days, n_hours)
 
-    rest_1 = get_rest_1(num_players, n_days, n_hours)
-    rest_2 = get_rest_2(num_players, n_days, n_hours)
-    rest_3 = get_rest_3(num_players, n_days, n_hours)
-    rest_4 = get_rest_4(num_players, n_days, n_hours)
-
-    create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
+    rest_1 = get_rest_1(num_players, n_days, n_hours, x)
+    rest_2 = get_rest_2(num_players, n_days, total_slots_per_day)
+    rest_3 = get_rest_3(num_players, n_days, total_slots_per_day)
+    rest_4 = get_rest_4(num_players, n_days, total_slots_per_day)
+    
+    print(len(x))
+    #create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
     
