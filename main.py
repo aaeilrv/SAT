@@ -33,13 +33,8 @@ if __name__ == '__main__':
     x = get_posible_games(num_players, n_days, total_slots_per_day)
 
     rest_1 = get_rest_1(num_players, n_days, total_slots_per_day, x)
-    rest_2 = get_rest_2(num_players, n_days, total_slots_per_day)
-    rest_3 = get_rest_3(num_players, n_days, total_slots_per_day)
-    rest_4 = get_rest_4(num_players, n_days, total_slots_per_day)
-
-    rest_2 = []
-    rest_3 = []
-    rest_4 = []
+    rest_2 = get_rest_2(num_players, n_days, total_slots_per_day, x)
+    rest_3 = get_rest_3(num_players, n_days, total_slots_per_day, x)
+    rest_4 = get_rest_4(num_players, n_days, total_slots_per_day, x)
     
     create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
-    
