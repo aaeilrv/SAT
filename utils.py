@@ -28,7 +28,8 @@ def no_x_or_no_y(curr_possible_games, possible_games, rest):
         x = possible_games.index(set[0])+1
         y = possible_games.index(set[1])+1
 
-        rest.append(f"-{x} -{y} 0\n")
+        if x != y:
+            rest.append(f"-{x} -{y} 0\n")
 
 # fix
 def x_or_y(curr_possible_games, possible_games, rest):

@@ -27,8 +27,8 @@ def get_rest_2(n_players, n_days, n_hours, possible_games):
                         if j1 != j2:
                             curr_possible_games.append((j1, j2, d, h))
 
-                no_x_or_no_y(curr_possible_games, possible_games, rest)
                 x_or_y(curr_possible_games, possible_games, rest)
+                no_x_or_no_y(curr_possible_games, possible_games, rest)
 
     return rest
 
