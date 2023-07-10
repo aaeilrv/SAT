@@ -55,8 +55,8 @@ def get_rest_2(n_players, n_days, n_hours, possible_games):
                     x = possible_games.index(set[0])+1
                     y = possible_games.index(set[1])+1
 
-                    rest.append(f"-{x} -{y} 0")    
-                    rest.append(f"{x} {y} 0")   
+                    rest.append(f"-{x} -{y} 0\n")    
+                    rest.append(f"{x} {y} 0\n")   
     return rest
 
 # 3. Un jugador solo puede jugar maximo una vez por dia
@@ -130,11 +130,11 @@ def get_rest_4(n_players, n_days, n_hours, possible_games):
 def create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4):
     # create the dimacs file
     f = open("tournament.dimacs", "w")
-    f.write(f"p cnf {len(x)} {len(rest_1)+len(rest_3)+len(rest_4)}\n")
+    f.write(f"p cnf {len(x)} {len(rest_1)+len(rest_2)+len(rest_3)+len(rest_4)}\n")
     for rest in rest_1:
         f.write(f"{rest}")
     for rest in rest_2:
-        f.write(f"{rest} \n")
+        f.write(f"{rest}")
     for rest in rest_3:
         f.write(f"{rest}")
     for rest in rest_4:
