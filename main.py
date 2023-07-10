@@ -1,5 +1,6 @@
-from datetime import datetime, timedelta
-from utils import o_clock, get_posible_games, get_rest_1, get_rest_2, get_rest_3, get_rest_4, create_dimacs_file
+from datetime import datetime
+from utils import o_clock, get_posible_games, create_dimacs_file, create_ical
+from restrictions import get_rest_1, get_rest_2, get_rest_3, get_rest_4
 import json
 import sys
 
@@ -21,9 +22,6 @@ if __name__ == '__main__':
     start_time = o_clock(start_time, "start")
     end_time = o_clock(end_time, "end")
 
-    print(f"start time: {start_time}")
-    print(f"end time: {end_time}")
-
     # calculate the total time of the game
     days = end_date - start_date
     
@@ -41,3 +39,10 @@ if __name__ == '__main__':
     rest_4 = get_rest_4(num_players, n_days, total_slots_per_day, x)
     
     create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
+
+    games_mapping = {}
+    for i in range(len(x)):
+        games_mapping[i+1] = x[i]
+
+    # create iCalendar file
+    create_ical(games_mapping)
