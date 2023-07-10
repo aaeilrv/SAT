@@ -1,7 +1,7 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 from itertools import combinations
 import subprocess
-#import icalendar
+from icalendar import Calendar, Event
 
 def o_clock(date_time, moment):
     if date_time.minute != 0 or date_time.second != 0 or date_time.microsecond != 0:
@@ -53,14 +53,49 @@ def create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4):
         f.write(f"{rest}")
     f.close()
 
-def write_ical_file(games, solution):
-    print("Solution found")	
-    #cal = Calendar()
-    #cal.add('prodid', '-//My calendar product//example.com//')
-    #cal.add('version', '2.0')
+def write_ical_file(all_games, solution, tournament_name, players_names, day, hour):
+    cal = Calendar()
+    cal.add('prodid', '-//My calendar product//example.com//')
+    cal.add('version', '2.0')
+    cal.add('name', tournament_name)
+
+    #event = Event()
+    #event.add('tournament_name', tournament_name)
+
+    solution = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 0"
+
+    for sol in solution.split():
+        if int(sol) > 0:
+            encounter = all_games.get(int(sol))
+
+            j1 = players_names.get(encounter[0]+1)
+            j2 = players_names.get(encounter[1]+1)
+            d = day.get(encounter[2]+1).strftime("%Y-%m-%d")
+            h = hour.get(encounter[3]+1).strftime("%H:%M:%S")
+            h2 = (hour.get(encounter[3]+1) + timedelta(hours=2)).strftime("%H:%M:%S")
+
+            '''
+            print(encounter)
+            print("j1: ", j1)
+            print("j2: ", j2)
+            print("d: ", d)
+            print("h: ", h)
+            print("\n")
+            '''
+
+            event = Event()
+            event.add('summary', f"{j1} vs {j2}")
+            event.add('dtstart', datetime.strptime(f"{d} {h}", '%Y-%m-%d %H:%M:%S'))
+            event.add('dtend', datetime.strptime(f"{d} {h2}", '%Y-%m-%d %H:%M:%S'))
+            cal.add_component(event)
+
+    # write .ics file
+    f = open(f"{tournament_name}.ics", "wb")
+    f.write(cal.to_ical())
+    f.close()
 
 
-def create_ical(games):
+def create_ical(games, tournament_name, players_names, days, hours):
     # call glucose
     subprocess.call(["./glucose-4.2.1/simp/glucose", "tournament.dimacs", "glucose-solution.txt", "-model", "-verb=0"],
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -72,4 +107,4 @@ def create_ical(games):
     if solution == "UNSAT":
         print("Solution not found")
     else:
-        write_ical_file(games, solution)
+        write_ical_file(games, solution, tournament_name, players_names, days, hours)

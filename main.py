@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from utils import o_clock, get_posible_games, create_dimacs_file, create_ical
 from restrictions import get_rest_1, get_rest_2, get_rest_3, get_rest_4
 import json
@@ -13,10 +13,12 @@ if __name__ == '__main__':
 
     # save data into variables
     game_length = 2 # each game lasts 2 hours
+    tournament_name = data['tournament_name']
     start_date = datetime.strptime(data['start_date'], '%Y-%m-%d')
     end_date = datetime.strptime(data['end_date'], '%Y-%m-%d')
     start_time = datetime.strptime(data['start_time'], '%H:%M:%S.%f')
     end_time = datetime.strptime(data['end_time'], '%H:%M:%S.%f')
+    players_names = data['participants']
     num_players = len(data['participants'])
 
     start_time = o_clock(start_time, "start")
@@ -40,9 +42,22 @@ if __name__ == '__main__':
     
     create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
 
+    # mappings
     games_mapping = {}
     for i in range(len(x)):
         games_mapping[i+1] = x[i]
 
+    players_mapping = {}
+    for i in range(len(players_names)):
+        players_mapping[i+1] = players_names[i]
+
+    days_mapping = {}
+    for i in range(n_days):
+        days_mapping[i+1] = start_date + timedelta(days=i)
+
+    hours_mapping = {}
+    for i in range(n_hours):
+        hours_mapping[i+1] = start_time + timedelta(hours=i)
+
     # create iCalendar file
-    create_ical(games_mapping)
+    create_ical(games_mapping, tournament_name, players_mapping, days_mapping, hours_mapping)
