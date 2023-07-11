@@ -73,7 +73,7 @@ def get_rest_4(n_players, n_days, n_hours, possible_games):
                 for h in range(n_hours):
                     if j1 != j2:
                         curr_posible_games.append((j2, j1, d, h))
-                        curr_posible_games.append((j2, j1, d, h))
+                        curr_posible_games.append((j2, j1, d+1, h))
 
             no_x_or_no_y(curr_posible_games, possible_games, rest)
     

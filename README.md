@@ -48,3 +48,27 @@ Debe crear un cliente que maneje todo el proceso. Es decir, reciba un JSON en el
 # Entrega
 
 Deben tener un repositorio con todo el código usado y un informe que describa su solución, sus resultados experimentales, así como instrucciones específicas para ejecutar todo el proceso.
+
+# Ejecucion del cliente
+El proyecto debe ser ejecutado en un sistema operativo linux-like.
+
+Ejecutar los siguientes comando en la carpeta raiz del proyecto.
+
+Luego de ejecutar el cliente, se muestra en pantalla el resultado del solver y se genera, en la misma carpeta, el archivo .ics correspondiente. 
+
+Si el problema no tiene solucion, no se genera archivo .ics
+
+## Paso 1: Instalar librerias
+```
+pip install -r requirements.txt
+```
+
+## Paso 2: Ejecutar el solver
+```
+sh ./run_sat_solver.sh /paht/to/json
+```
+
+## Paso 2.1: En caso de error por permisos de ejecucion en el paso anterior
+```
+sudo chmod +x run_sat_solver.sh
+```

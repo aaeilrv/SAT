@@ -74,15 +74,6 @@ def write_ical_file(all_games, solution, tournament_name, players_names, day, ho
             h = hour.get(encounter[3]+1).strftime("%H:%M:%S")
             h2 = (hour.get(encounter[3]+1) + timedelta(hours=2)).strftime("%H:%M:%S")
 
-            '''
-            print(encounter)
-            print("j1: ", j1)
-            print("j2: ", j2)
-            print("d: ", d)
-            print("h: ", h)
-            print("\n")
-            '''
-
             event = Event()
             event.add('summary', f"{j1} vs {j2}")
             event.add('dtstart', datetime.strptime(f"{d} {h}", '%Y-%m-%d %H:%M:%S'))
@@ -106,6 +97,6 @@ def create_ical(games, tournament_name, players_names, days, hours):
         file.close()
     if solution == "UNSAT":
         print("UNSATISFIABLE")
-        print("Solution not found")
     else:
         write_ical_file(games, solution, tournament_name, players_names, days, hours)
+        print(".ics file created")
