@@ -97,4 +97,4 @@ def create_ical(games, tournament_name, players_names, days, hours):
         print("UNSATISFIABLE: A solution does not exist.")
     else:
         write_ical_file(games, solution, tournament_name, players_names, days, hours)
-        print(".ics file created")
+        print(" - .ics file created")

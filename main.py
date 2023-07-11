@@ -3,6 +3,7 @@ from utils import o_clock, get_posible_games, create_dimacs_file, create_ical
 from restrictions import get_rest_1, get_rest_2, get_rest_3, get_rest_4
 import json
 import sys
+import time
 
 if __name__ == '__main__':
     # open json file and transform into a dictionary
@@ -35,20 +36,31 @@ if __name__ == '__main__':
     
     x = get_posible_games(num_players, n_days, total_slots_per_day)
 
+    start_time_exec = time.time()
+
+    # restrictions
+    print("Encoding restrictions:")
+
     rest_1 = get_rest_1(num_players, n_days, total_slots_per_day, x)
-    print("rest 1 encoded")
+    print(" - rest 1 encoded")
 
     rest_2 = get_rest_2(num_players, n_days, total_slots_per_day, x)
-    print("rest 2 encoded")
+    print(" - rest 2 encoded")
 
     rest_3 = get_rest_3(num_players, n_days, total_slots_per_day, x)
-    print("rest 3 encoded")
+    print(" - rest 3 encoded")
 
     rest_4 = get_rest_4(num_players, n_days, total_slots_per_day, x)
-    print("rest_4 encoded")
+    print(" - rest_4 encoded")
+    
+    end_time_rest = time.time()
 
     create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
-    print(".dimacs file created")
+    print("----------")
+    print("File creations:")
+    print(" - .dimacs file created")
+
+    end_time_dimacs = time.time()
     
     # mappings
     games_mapping = {}
@@ -69,3 +81,12 @@ if __name__ == '__main__':
 
     # create iCalendar file
     create_ical(games_mapping, tournament_name, players_mapping, days_mapping, hours_mapping)
+
+    end_time_ical = time.time()
+
+    # execution times
+    print("----------")
+    print("Execution times:")
+    print(f" - restrictions: {round(end_time_rest - start_time_exec, 2)} seconds")
+    print(f" - dimacs file: {round(end_time_dimacs - start_time_exec, 2)} seconds")
+    print(f" - creation iCalendar file: {round(end_time_ical - start_time_exec, 2)} seconds")
