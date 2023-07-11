@@ -31,7 +31,6 @@ def no_x_or_no_y(curr_possible_games, possible_games, rest):
         if x != y:
             rest.append(f"-{x} -{y} 0\n")
 
-# fix
 def x_or_y(curr_possible_games, possible_games, rest):
     subsets = combinations(curr_possible_games, len(curr_possible_games))
     for set in subsets:
@@ -85,7 +84,6 @@ def write_ical_file(all_games, solution, tournament_name, players_names, day, ho
     f.write(cal.to_ical())
     f.close()
 
-
 def create_ical(games, tournament_name, players_names, days, hours):
     # call glucose
     subprocess.call(["./glucose-4.2.1/simp/glucose", "tournament.dimacs", "glucose-solution.txt", "-model", "-verb=0"],
@@ -96,7 +94,7 @@ def create_ical(games, tournament_name, players_names, days, hours):
         solution = file.readline().strip()
         file.close()
     if solution == "UNSAT":
-        print("UNSATISFIABLE")
+        print("UNSATISFIABLE: A solution does not exist.")
     else:
         write_ical_file(games, solution, tournament_name, players_names, days, hours)
         print(".ics file created")

@@ -1,0 +1,13 @@
+{
+    "tournament_name": "test_3",
+    "start_date": "2023-07-01",
+    "end_date": "2024-07-07",
+    "start_time": "18:00:00.000",
+    "end_time": "23:00:00.001",
+    "participants":
+    ["player1",
+    "player2",
+    "player3",
+    "player4"
+    ]
+}
