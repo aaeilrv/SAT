@@ -49,7 +49,7 @@ Debe crear un cliente que maneje todo el proceso. Es decir, reciba un JSON en el
 
 Deben tener un repositorio con todo el código usado y un informe que describa su solución, sus resultados experimentales, así como instrucciones específicas para ejecutar todo el proceso.
 
-# Ejecucion del cliente
+# Ejecución del cliente
 El proyecto debe ser ejecutado en un sistema operativo linux-like.
 
 Ejecutar los siguientes comando en la carpeta raiz del proyecto.
