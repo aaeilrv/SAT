@@ -58,7 +58,7 @@ if __name__ == '__main__':
     create_dimacs_file(x, rest_1, rest_2, rest_3, rest_4)
     print("----------")
     print("File creations:")
-    print(" - .dimacs file created")
+    print(" - .dimacs file created ✓")
 
     end_time_dimacs = time.time()
     
@@ -89,4 +89,4 @@ if __name__ == '__main__':
     print("Execution times:")
     print(f" - restrictions: {round(end_time_rest - start_time_exec, 2)} seconds")
     print(f" - dimacs file: {round(end_time_dimacs - start_time_exec, 2)} seconds")
-    print(f" - creation iCalendar file: {round(end_time_ical - start_time_exec, 2)} seconds")
+    print(f" - iCalendar file: {round(end_time_ical - start_time_exec, 2)} seconds")

@@ -88,13 +88,28 @@ def create_ical(games, tournament_name, players_names, days, hours):
     # call glucose
     subprocess.call(["./glucose-4.2.1/simp/glucose", "tournament.dimacs", "glucose-solution.txt", "-model", "-verb=0"],
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    
+
     # check if solution exists
     with open("glucose-solution.txt", 'r') as file:
         solution = file.readline().strip()
         file.close()
     if solution == "UNSAT":
-        print("UNSATISFIABLE: A solution does not exist.")
+        print("----------"	)
+        print("UNSATISFIABLE: A solution does not exist. ✗")
+        exit()
     else:
         write_ical_file(games, solution, tournament_name, players_names, days, hours)
-        print(" - .ics file created")
+        print(" - .ics file created ✓")
+
+        # see number of clauses and variables created
+        with open("tournament.dimacs", 'r') as file:
+            first_line = file.readline().strip()
+            file.close()
+
+        variables = int(first_line.split()[2])
+        clauses = int(first_line.split()[3])
+
+        print("----------")
+        print("Number of variables and clauses in DIMACS CNF:")
+        print(f" - {variables} variables")
+        print(f" - {clauses} clauses")
