@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from utils import o_clock, get_posible_games, create_dimacs_file, create_ical, call_glucose
+from utils import o_clock, get_posible_games, create_dimacs_file, create_ical
 from restrictions import get_rest_1, get_rest_2, get_rest_3, get_rest_4
 import json
 import sys
@@ -78,9 +78,8 @@ if __name__ == '__main__':
         hours_mapping[i+1] = start_time + timedelta(hours=i*2)
 
     # create iCalendar file
-    create_ical(games_mapping, tournament_name, players_mapping, days_mapping, hours_mapping)
-
-    end_time_glucose = time.time()
+    end_time_glucose = create_ical(games_mapping, tournament_name,
+                                   players_mapping, days_mapping, hours_mapping)
 
     # execution times
     print("----------")

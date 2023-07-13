@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from itertools import combinations
 import subprocess
 from icalendar import Calendar, Event
+import time
 
 def o_clock(date_time, moment):
     if date_time.minute != 0 or date_time.second != 0 or date_time.microsecond != 0:
@@ -84,13 +85,14 @@ def write_ical_file(all_games, solution, tournament_name, players_names, day, ho
     f.write(cal.to_ical())
     f.close()
 
-def call_glucose():
+
+def create_ical(games, tournament_name, players_names, days, hours):
     # call glucose
     subprocess.call(["./glucose-4.2.1/simp/glucose", "tournament.dimacs", "glucose-solution.txt", "-model", "-verb=0"],
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    end_time_glucose = time.time()
 
-
-def create_ical(games, tournament_name, players_names, days, hours):
     # check if solution exists
     with open("glucose-solution.txt", 'r') as file:
         solution = file.readline().strip()
@@ -115,3 +117,5 @@ def create_ical(games, tournament_name, players_names, days, hours):
         print("Number of variables and clauses in DIMACS CNF:")
         print(f" - {variables} variables")
         print(f" - {clauses} clauses")
+    
+    return end_time_glucose
