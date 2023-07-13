@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from utils import o_clock, get_posible_games, create_dimacs_file, create_ical
+from utils import o_clock, get_posible_games, create_dimacs_file, create_ical, call_glucose
 from restrictions import get_rest_1, get_rest_2, get_rest_3, get_rest_4
 import json
 import sys
@@ -59,8 +59,6 @@ if __name__ == '__main__':
     print("----------")
     print("File creations:")
     print(" - .dimacs file created ✓")
-
-    end_time_dimacs = time.time()
     
     # mappings
     games_mapping = {}
@@ -82,11 +80,10 @@ if __name__ == '__main__':
     # create iCalendar file
     create_ical(games_mapping, tournament_name, players_mapping, days_mapping, hours_mapping)
 
-    end_time_ical = time.time()
+    end_time_glucose = time.time()
 
     # execution times
     print("----------")
     print("Execution times:")
     print(f" - restrictions: {round(end_time_rest - start_time_exec, 2)} seconds")
-    print(f" - dimacs file: {round(end_time_dimacs - start_time_exec, 2)} seconds")
-    print(f" - iCalendar file: {round(end_time_ical - start_time_exec, 2)} seconds")
+    print(f" - glucose call: {round(end_time_glucose - start_time_exec, 2)} seconds")

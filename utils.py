@@ -84,11 +84,13 @@ def write_ical_file(all_games, solution, tournament_name, players_names, day, ho
     f.write(cal.to_ical())
     f.close()
 
-def create_ical(games, tournament_name, players_names, days, hours):
+def call_glucose():
     # call glucose
     subprocess.call(["./glucose-4.2.1/simp/glucose", "tournament.dimacs", "glucose-solution.txt", "-model", "-verb=0"],
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
+
+def create_ical(games, tournament_name, players_names, days, hours):
     # check if solution exists
     with open("glucose-solution.txt", 'r') as file:
         solution = file.readline().strip()
