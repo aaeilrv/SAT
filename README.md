@@ -65,7 +65,7 @@ pip install -r requirements.txt
 
 ## Paso 2: Ejecutar el solver
 ```
-sh ./run_sat_solver.sh /paht/to/json
+sh ./run_sat_solver.sh [/path/to/json]
 ```
 
 ## Paso 2.1: En caso de error por permisos de ejecucion en el paso anterior
